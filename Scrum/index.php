@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
+    <?php include 'conexao.php'; ?>
+
     <header>
       <h1>SCRUM</h1>
       <div class="template-selection">
@@ -40,9 +42,10 @@
       <div class="modal-content">
         <span class="close-modal" onclick="closeModal()">&times;</span>
         <h2 id="modal-title">Criar Novo Template</h2>
-        <form id="create-template-form">
+        <form id="create-template-form" method="POST"> <!-- Criado um Post, na tentativa de conectar o template criado no banco de dados-->
           <label for="template-name">Nome do Template:</label>
           <input
+            name="template-name"
             type="text"
             id="template-name"
             placeholder="Nome do Template"
@@ -51,6 +54,7 @@
 
           <label for="num-columns">Número de Quadros:</label>
           <input
+            name="num-columns"
             type="number"
             id="num-columns"
             min="1"
@@ -61,7 +65,7 @@
 
           <div id="columns-inputs"></div>
 
-          <button type="submit">Salvar Template</button>
+          <button name="salvar-template" type="submit">Salvar Template</button>
         </form>
       </div>
     </div>
