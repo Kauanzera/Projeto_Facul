@@ -1,102 +1,29 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Quadro Scrum</title>
-    <link rel="stylesheet" href="styles.css" />
-  </head>
-  <body>
-    <?php include 'conexao.php'; ?>
+<?php   // Que os jogos comecem ;-;      • 20/10/24 •
 
-    <header>
-      <h1>SCRUM</h1>
-      <div class="template-selection">
-        <select id="template-select">
-          <option value="">Selecione um Template</option>
-          <option value="criar-template">Criar Novo Template</option>
-        </select>
+    // Incluindo o código html no arquivo index
+    include('site.html');
 
-        <button id="delete-template-btn">Deletar Template</button>
-      </div>
-      <div class="user-area">
-        <span id="username">Usuário</span>
-        <button onclick="logout()">Sair</button>
-      </div>
-    </header>
+    // Conexão com o banco de dados
+    $pdo = new PDO("mysql:host=localhost;dbname=gerenciador_tarefas", "root", "");
 
-    <main id="main-content">
-      <div class="welcome-text" id="welcome-text">
-        <h2>Bem-vindo ao Quadro Scrum</h2>
-        <p>Selecione ou crie um template para começar!</p>
-      </div>
-      <h2 id="template-title"></h2>
-      <div class="columns-container" id="columns-container"></div>
+    // Data e hora padrão do site: São Paulo 'GMT -03:00'
+    date_default_timezone_set('America/Sao_Paulo');
 
-      <button id="delete-template-btn" style="display: none">
-        Deletar Template
-      </button>
-    </main>
 
-    <div id="create-template-modal" class="modal">
-      <div class="modal-content">
-        <span class="close-modal" onclick="closeModal()">&times;</span>
-        <h2 id="modal-title">Criar Novo Template</h2>
-        <form id="create-template-form" method="POST"> <!-- Criado um Post, na tentativa de conectar o template criado no banco de dados-->
-          <label for="template-name">Nome do Template:</label>
-          <input
-            name="template-name"
-            type="text"
-            id="template-name"
-            placeholder="Nome do Template"
-            required
-          />
+    // Atribuição das informações de criação de Template a tabela `projetos`
+    if(isset($_POST['salvar-template'])){
+        $nomeTemplate = $_POST['template-name'];
+        $categoriaTemplate = $_POST['template-category'];
+        $descricaoTemplate = $_POST['template-description'];
 
-          <label for="num-columns">Número de Quadros:</label>
-          <input
-            name="num-columns"
-            type="number"
-            id="num-columns"
-            min="1"
-            max="10"
-            value="1"
-            required
-          />
+        $sql = $pdo->prepare("INSERT INTO `projetos` VALUES (null, ?, ?, ?)");
 
-          <div id="columns-inputs"></div>
+        $sql->execute(array($nomeTemplate, $categoriaTemplate, $descricaoTemplate));
+        
+    }
 
-          <button name="salvar-template" type="submit">Salvar Template</button>
-        </form>
-      </div>
-    </div>
 
-    <div id="add-task-modal" class="modal">
-      <div class="modal-content">
-        <span class="close-modal" onclick="closeTaskModal()">&times;</span>
-        <h2>Adicionar Tarefa</h2>
-        <form id="add-task-form">
-          <input
-            type="text"
-            id="task-name"
-            placeholder="Nome da Tarefa"
-            required
-          />
-          <input type="hidden" id="current-column" />
-          <button type="submit">Adicionar Tarefa</button>
-        </form>
-      </div>
-    </div>
 
-    <div id="delete-confirm-modal" class="modal">
-      <div class="modal-content">
-        <span class="close-modal" onclick="closeDeleteModal()">&times;</span>
-        <h2>Deletar Template</h2>
-        <p>Tem certeza que deseja deletar este template?</p>
-        <button id="confirm-delete-btn">Confirmar</button>
-        <button onclick="closeDeleteModal()">Cancelar</button>
-      </div>
-    </div>
+    //ODEIO PHP 
 
-    <script src="script.js"></script>
-  </body>
-</html>
+?>
